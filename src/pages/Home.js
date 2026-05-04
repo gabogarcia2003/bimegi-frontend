@@ -8,7 +8,7 @@ function Home() {
       <p style={styles.subtitulo}>La plataforma de compra y venta más fácil de Bolivia</p>
       <div style={styles.botones}>
         <Link to="/productos" style={styles.btnPrimario}>Ver Productos</Link>
-        <Link to="/registro" style={styles.btnSecundario}>Publicar un producto</Link>
+        <Link to="/publicar" style={styles.btnSecundario}>Publicar un producto</Link>
       </div>
     </div>
   );

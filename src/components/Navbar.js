@@ -18,6 +18,7 @@ function Navbar() {
         <Link to="/productos" style={styles.link}>Productos</Link>
         {usuario ? (
           <>
+            <Link to="/publicar" style={styles.link}>+ Publicar</Link>
             <span style={styles.bienvenida}>Hola, {usuario.nombre}</span>
             <button onClick={cerrarSesion} style={styles.btn}>Cerrar sesión</button>
           </>
