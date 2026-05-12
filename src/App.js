@@ -7,6 +7,7 @@ import Registro from './pages/Registro';
 import Productos from './pages/Productos';
 import PublicarProducto from './pages/PublicarProducto';
 import DetalleProducto from './pages/DetalleProducto';
+import Perfil from './pages/Perfil';
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/productos" element={<Productos />} />
         <Route path="/publicar" element={<PublicarProducto />} />
         <Route path="/productos/:id" element={<DetalleProducto />} />
+        <Route path="/perfil" element={<Perfil />} />
       </Routes>
     </Router>
   );
