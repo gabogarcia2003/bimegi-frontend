@@ -8,6 +8,7 @@ import Productos from './pages/Productos';
 import PublicarProducto from './pages/PublicarProducto';
 import DetalleProducto from './pages/DetalleProducto';
 import Perfil from './pages/Perfil';
+import Admin from './pages/Admin';
 import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/publicar" element={<PublicarProducto />} />
         <Route path="/productos/:id" element={<DetalleProducto />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>
   );

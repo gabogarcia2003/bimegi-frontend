@@ -20,6 +20,9 @@ function Navbar() {
           <>
             <Link to="/publicar" style={styles.link}>+ Publicar</Link>
             <Link to="/perfil" style={styles.link}>Mi Perfil</Link>
+            {usuario.rol === 'admin' && (
+              <Link to="/admin" style={styles.linkAdmin}>Panel Admin</Link>
+            )}
             <span style={styles.bienvenida}>Hola, {usuario.nombre}</span>
             <button onClick={cerrarSesion} style={styles.btn}>Cerrar sesión</button>
           </>
@@ -39,6 +42,7 @@ const styles = {
   logo: { color: 'white', textDecoration: 'none', fontSize: '24px', fontWeight: 'bold' },
   links: { display: 'flex', alignItems: 'center', gap: '20px' },
   link: { color: 'white', textDecoration: 'none', fontSize: '16px' },
+  linkAdmin: { color: '#f39c12', textDecoration: 'none', fontSize: '16px', fontWeight: 'bold' },
   bienvenida: { color: '#3498db', fontSize: '16px' },
   btn: { padding: '8px 16px', backgroundColor: '#e74c3c', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }
 };
