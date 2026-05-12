@@ -5,21 +5,33 @@ import { Link } from 'react-router-dom';
 function Productos() {
   const [productos, setProductos] = useState([]);
   const [buscar, setBuscar] = useState('');
+  const [categoriaActiva, setCategoriaActiva] = useState('todas');
+
+  const categorias = ['todas', 'electronica', 'ropa', 'hogar', 'deportes', 'libros', 'otros'];
 
   useEffect(() => {
     cargarProductos();
   }, []);
 
-  const cargarProductos = async (filtro = '') => {
+  const cargarProductos = async (filtro = '', categoria = '') => {
     try {
-      const url = filtro
-        ? `http://localhost:5000/api/products?buscar=${filtro}`
-        : 'http://localhost:5000/api/products';
+      let url = 'http://localhost:5000/api/products?';
+      if (filtro) url += 'buscar=' + filtro + '&';
+      if (categoria && categoria !== 'todas') url += 'categoria=' + categoria;
       const res = await axios.get(url);
       setProductos(res.data);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleCategoria = (cat) => {
+    setCategoriaActiva(cat);
+    cargarProductos(buscar, cat);
+  };
+
+  const handleBuscar = () => {
+    cargarProductos(buscar, categoriaActiva);
   };
 
   return (
@@ -32,9 +44,27 @@ function Productos() {
           value={buscar}
           onChange={(e) => setBuscar(e.target.value)}
         />
-        <button style={styles.btn} onClick={() => cargarProductos(buscar)}>Buscar</button>
+        <button style={styles.btn} onClick={handleBuscar}>Buscar</button>
         <Link to="/publicar" style={styles.btnPublicar}>+ Publicar producto</Link>
       </div>
+
+      <div style={styles.filtros}>
+        {categorias.map(cat => (
+          <button
+            key={cat}
+            style={cat === categoriaActiva ? styles.filtroActivo : styles.filtro}
+            onClick={() => handleCategoria(cat)}
+          >
+            {cat === 'todas' ? '🔍 Todas' :
+             cat === 'electronica' ? '💻 Electrónica' :
+             cat === 'ropa' ? '👕 Ropa' :
+             cat === 'hogar' ? '🏠 Hogar' :
+             cat === 'deportes' ? '⚽ Deportes' :
+             cat === 'libros' ? '📚 Libros' : '📦 Otros'}
+          </button>
+        ))}
+      </div>
+
       <div style={styles.grid}>
         {productos.length === 0 ? (
           <p style={styles.vacio}>No hay productos disponibles</p>
@@ -66,7 +96,7 @@ function Productos() {
                 <p style={styles.ciudad}>📍 {p.ciudad}</p>
                 <button
                   style={styles.btnVer}
-                  onClick={() => window.location.href = `/productos/${p._id}`}
+                  onClick={() => window.location.href = '/productos/' + p._id}
                 >
                   Ver detalle
                 </button>
@@ -82,10 +112,13 @@ function Productos() {
 const styles = {
   container: { padding: '30px', backgroundColor: '#f8f9fa', minHeight: '90vh' },
   titulo: { textAlign: 'center', color: '#2c3e50', fontSize: '32px', marginBottom: '20px' },
-  buscador: { display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '30px', flexWrap: 'wrap' },
+  buscador: { display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' },
   input: { padding: '10px 20px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '16px', width: '300px' },
   btn: { padding: '10px 20px', backgroundColor: '#2c3e50', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '16px' },
   btnPublicar: { padding: '10px 20px', backgroundColor: '#27ae60', color: 'white', textDecoration: 'none', borderRadius: '6px', fontSize: '16px' },
+  filtros: { display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '30px', flexWrap: 'wrap' },
+  filtro: { padding: '8px 16px', backgroundColor: 'white', color: '#2c3e50', border: '2px solid #ddd', borderRadius: '20px', cursor: 'pointer', fontSize: '14px' },
+  filtroActivo: { padding: '8px 16px', backgroundColor: '#2c3e50', color: 'white', border: '2px solid #2c3e50', borderRadius: '20px', cursor: 'pointer', fontSize: '14px' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' },
   card: { backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', overflow: 'hidden' },
   imagen: { width: '100%', height: '200px', objectFit: 'cover' },
